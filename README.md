@@ -14,7 +14,7 @@ A flexible and easy-to-use GraphQL client repository for Flutter applications.
 ```dart
 import 'package:graphql_repository/graphql_repository.dart';
 
-  // Configure GraphQLClient 
+  // Configure GraphQLClient
     final graphQLClientConfig = GraphQLClientConfiguration(
       endpoint: 'https://your-graphql-endpoint.com/graphql',
       getToken: () async {
@@ -102,4 +102,11 @@ class MyRepository extends GraphQLBaseRepository {
     );
   }
 }
+
 ```
+
+// Extract headers from the response context
+result = response.data!['something'];
+final HttpLinkResponseContext? responseContext =
+result.context.entry<HttpLinkResponseContext>();
+final Map<String, String?> responseHeaders = responseContext?.headers ?? {};

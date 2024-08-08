@@ -1,6 +1,6 @@
 name: graphql_repository
 description: "A flexible and easy-to-use GraphQL client repository for Flutter applications."
-version: 0.1.5
+version: 0.2.1
 
 homepage: https://github.com/SajanNgk/graphql_base_repositoy
 

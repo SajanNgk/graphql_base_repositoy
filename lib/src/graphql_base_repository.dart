@@ -23,7 +23,7 @@ abstract class GraphQLBaseRepository {
   }
 
   // Generic query method
-  Future<T> performQuery<T>(
+  Future<QueryResult> performQuery<T>(
     String queryString, {
     Map<String, dynamic>? variables,
     Map<String, String>? headers, // Query variables
@@ -44,8 +44,10 @@ abstract class GraphQLBaseRepository {
         cacheRereadPolicy: cacheRereadPolicy,
         optimisticResult: optimisticResult,
         pollInterval: pollInterval,
-        context: (context ?? const Context()).withEntry(
-          HttpLinkHeaders(headers: headers ?? {}),
+        context: const Context().withEntry(
+          HttpLinkHeaders(
+            headers: headers ?? {},
+          ),
         ),
       );
 
@@ -58,7 +60,7 @@ abstract class GraphQLBaseRepository {
       }
 
       // Return the data from the result
-      return result.data as T;
+      return result;
     } catch (e, s) {
       // Log any errors that occur during the query
       _logError(e, s);
@@ -67,7 +69,7 @@ abstract class GraphQLBaseRepository {
   }
 
   // Generic mutation method
-  Future<T> performMutation<T>(
+  Future<QueryResult> performMutation<T>(
     String mutationString, {
     Map<String, dynamic>? variables,
     Map<String, String>? headers,
@@ -78,8 +80,7 @@ abstract class GraphQLBaseRepository {
     Object? optimisticResult, // Optimistic result
     Context? context, // Context
     List<QueryOptions>? refetchQueries, // Refetch queries
-    FutureOr<void> Function(GraphQLDataProxy, QueryResult<Object?>?)?
-        update, // Update function
+    OnMutationUpdate<Object?>? update, // Update function
   }) async {
     try {
       // Create mutation options with the provided parameters
@@ -90,8 +91,10 @@ abstract class GraphQLBaseRepository {
         errorPolicy: errorPolicy ?? ErrorPolicy.none,
         cacheRereadPolicy: cacheRereadPolicy,
         optimisticResult: optimisticResult,
-        context: (context ?? const Context()).withEntry(
-          HttpLinkHeaders(headers: headers ?? {}),
+        context: const Context().withEntry(
+          HttpLinkHeaders(
+            headers: headers ?? {},
+          ),
         ),
         update: update,
       );
@@ -105,7 +108,7 @@ abstract class GraphQLBaseRepository {
       }
 
       // Return the data from the result
-      return result.data as T;
+      return result;
     } catch (e, s) {
       // Log any errors that occur during the mutation
       _logError(e, s);
@@ -114,7 +117,7 @@ abstract class GraphQLBaseRepository {
   }
 
   // Generic subscription method
-  Stream<T> performSubscribtion<T>(
+  Stream<QueryResult> performSubscribtion<T>(
     String subscriptionString, {
     Map<String, dynamic>? variables, // Subscription variables
     Map<String, String>? headers,
@@ -132,8 +135,10 @@ abstract class GraphQLBaseRepository {
       errorPolicy: errorPolicy ?? ErrorPolicy.none,
       cacheRereadPolicy: cacheRereadPolicy,
       optimisticResult: optimisticResult,
-      context: (context ?? const Context()).withEntry(
-        HttpLinkHeaders(headers: headers ?? {}),
+      context: const Context().withEntry(
+        HttpLinkHeaders(
+          headers: headers ?? {},
+        ),
       ),
     );
 
@@ -144,7 +149,7 @@ abstract class GraphQLBaseRepository {
         throw _handleGraphQLException(result.exception!);
       }
       // Return the data from the result
-      return result.data as T;
+      return result;
     });
   }
 
