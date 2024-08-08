@@ -14,12 +14,12 @@ class CustomAPIException implements Exception {
       return e;
     }
     return CustomAPIException(
-      message: 'An error occurred: ${e.toString()}',
+      message: e.toString(),
       originalException: e,
       stackTrace: s,
     );
   }
 
   @override
-  String toString() => 'CustomAPIException: $message';
+  String toString() => message;
 }

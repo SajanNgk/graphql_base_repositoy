@@ -40,11 +40,13 @@ class LoggingLink extends Link {
             .difference(timestamp); // Get the duration of the request.
         _log(
             'GraphQL Response (${requestDuration.inMilliseconds}ms):'); // Log that a GraphQL response has been received.
-        if (response.data != null)
+        if (response.data != null) {
           _log('Data: ${response.data}'); // Log the data from the response.
-        if (response.errors != null)
+        }
+        if (response.errors != null) {
           _log(
               'Errors: ${response.errors}'); // Log any errors from the response.
+        }
 
         yield response; // Yield the response to the next link in the link chain.
       }

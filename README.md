@@ -79,6 +79,7 @@ class MyRepository extends GraphQLBaseRepository {
     final result = await performMutation<Map<String, dynamic>>(
       mutation,
       variables: {'id': id, 'name': name, 'email': email},
+      
     );
 
     return result['updateUser'];
@@ -99,14 +100,14 @@ class MyRepository extends GraphQLBaseRepository {
     return performSubscription<Map<String, dynamic>>(
       subscription,
       variables: {'id': id},
+
     );
   }
 }
 
-```
-
 // Extract headers from the response context
-result = response.data!['something'];
+ final result = response.data!['something'];
 final HttpLinkResponseContext? responseContext =
 result.context.entry<HttpLinkResponseContext>();
 final Map<String, String?> responseHeaders = responseContext?.headers ?? {};
+```
