@@ -39,7 +39,11 @@ class GraphQLClientConfiguration {
     if (getToken != null) {
       final AuthLink authLink = AuthLink(
         // The getToken function is used to obtain an authentication token for the request
-        getToken: () async => await getToken!(),
+        getToken: () async {
+          final token = await getToken!();
+          // Ensure the token is prefixed with "Bearer "
+          return token != null && token.isNotEmpty ? 'Bearer $token' : null;
+        },
       );
       link = authLink.concat(link);
     }
