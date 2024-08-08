@@ -1,6 +1,7 @@
 name: graphql_repository
 description: "A flexible and easy-to-use GraphQL client repository for Flutter applications."
-version: 0.1.0
+version: 0.1.5
+
 homepage: https://github.com/SajanNgk/graphql_base_repositoy
 
 environment:
@@ -11,9 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   graphql: ^5.1.3
   graphql_flutter: ^5.1.0
-  hive: ^2.2.3
+
+ 
   mockito: ^5.4.4
 
 dev_dependencies:

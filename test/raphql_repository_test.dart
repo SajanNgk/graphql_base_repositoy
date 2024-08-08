@@ -1,24 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:graphql_repository/graphql_repository.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql_repository/src/custom_api_exceptions.dart';
+import 'package:graphql_repository/src/graphql_client_configuration.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+
+
 
 // This will generate a MockGraphQLClient and MockLink
 @GenerateMocks([GraphQLClient, Link])
-import 'raphql_repository_test.mocks.dart';
 
-class TestRepository extends GraphQLBaseRepository {
-  TestRepository({required GraphQLClient client})
-      : super(
-            endpoint: 'https://restronaut.hyperce.io/shop-api/',
-            link: client.link);
-}
+import 'raphql_repository_test.mocks.dart';
+import 'test_repository.dart';
+
+
 
 void main() {
   late MockGraphQLClient mockClient;
   late MockLink mockLink;
   late TestRepository repository;
+  late GraphQLClientConfiguration config;
 
   setUp(() {
     mockClient = MockGraphQLClient();
@@ -43,7 +46,18 @@ void main() {
       return Stream.value(response);
     });
 
-    repository = TestRepository(client: mockClient);
+    // Create a mock secure storage
+    
+    
+    // Configure the GraphQLClientConfiguration
+    config = GraphQLClientConfiguration(
+      endpoint: 'https://restronaut.hyperce.io/shop-api/',
+      
+      getToken: () async => null, // or provide a mock token
+    );
+
+    // Initialize repository with the config
+    repository = TestRepository(config);
   });
 
   group('GraphQLBaseRepository', () {
@@ -77,7 +91,7 @@ void main() {
             options: QueryOptions(document: gql(testQuery)),
           ));
 
-      final result = await repository.query(testQuery);
+      final result = await repository.performQuery(testQuery);
 
       expect(result, equals(expectedData));
     });
@@ -103,7 +117,7 @@ void main() {
           ));
 
       expect(
-        () => repository.query(testQuery),
+        () => repository.performMutation(testQuery),
         throwsA(isA<CustomAPIException>().having(
           (e) => e.message,
           'message',
