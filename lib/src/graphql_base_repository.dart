@@ -158,7 +158,7 @@ abstract class GraphQLBaseRepository {
     if (exception.linkException != null) {
       // Log network errors
       _log('Network error occurred: ${exception.linkException}');
-      return CustomAPIException(message: 'Network error occurred');
+      return CustomAPIException(message: '${exception.linkException}');
     } else if (exception.graphqlErrors.isNotEmpty) {
       // Handle GraphQL errors
       final error = exception.graphqlErrors.first;
